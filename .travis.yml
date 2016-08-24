@@ -1,0 +1,18 @@
+
+language: node_js
+
+node_js:
+  - '4'
+
+sudo: false
+
+branches:
+  only:
+  - serverless-unittest-boilerplate
+
+install:
+  - npm install -g serverless@0.5
+  - npm install
+
+script:
+  - npm test
