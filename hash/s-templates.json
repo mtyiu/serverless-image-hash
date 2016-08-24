@@ -1,0 +1,5 @@
+{
+  "requestPostTemplate" : {
+    "application/x-www-form-urlencoded" : "{\"body\" : $input.json(\"$\")}"
+  }
+}
