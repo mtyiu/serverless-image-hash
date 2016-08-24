@@ -10,6 +10,7 @@
     "url": "git://github.com/"
   },
   "dependencies": {
+    "aws-sdk": "^2.5.3",
     "jimp": "^0.2.27",
     "serverless-mocha-plugin": "^0.5.15"
   }

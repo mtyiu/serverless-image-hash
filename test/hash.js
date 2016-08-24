@@ -4,8 +4,9 @@
 
 const mod         = require('../hash/handler.js');
 const mochaPlugin = require('serverless-mocha-plugin');
+const querystring = require('querystring');
 const lambdaWrapper     = mochaPlugin.lambdaWrapper;
-const expect      = mochaPlugin.chai.expect;
+const assert      = mochaPlugin.chai.assert;
 
 const liveFunction = {
   region: process.env.SERVERLESS_REGION,
@@ -23,12 +24,52 @@ describe('hash', () => {
 
   it('should return two identical hashes', (done) => {
     //runHandler(event, customContext, callback)
-    wrapped.runHandler({
-      body: 'url1=https%3A%2F%2Fraw.githubusercontent.com%2Fjenssegers%2Fimagehash%2Fmaster%2Ftests%2Fimages%2Fforest%2Fforest-high.jpg&url2=https%3A%2F%2Fraw.githubusercontent.com%2Fjenssegers%2Fimagehash%2Fmaster%2Ftests%2Fimages%2Fforest%2Fforest-copyright.jpg'
-    }, {}, (err, response) => {
-      console.log(err);
-      console.log(response);
-      done('no tests implemented');
+    const body = querystring.stringify({
+      url1: 'https://mtyiu.github.io/serverless-image-hash/images/nasa.png',
+      url2: 'https://mtyiu.github.io/serverless-image-hash/images/nasa.png'
+    });
+    wrapped.runHandler({ body: body }, {}, (err, response) => {
+      try {
+        assert.equal(response.hashes[0], response.hashes[1]);
+        assert.equal(response.diff, 0);
+        done();
+      } catch(e) {
+        done(e);
+      }
+    });
+  });
+
+  it('should return two different hashes', (done) => {
+    //runHandler(event, customContext, callback)
+    const body = querystring.stringify({
+      url1: 'https://mtyiu.github.io/serverless-image-hash/images/nasa.png',
+      url2: 'https://mtyiu.github.io/serverless-image-hash/images/img_fjords.jpg'
+    });
+    wrapped.runHandler({ body: body }, {}, (err, response) => {
+      try {
+        assert.notEqual(response.hashes[0], response.hashes[1]);
+        assert.notEqual(response.diff, 0);
+        done();
+      } catch(e) {
+        done(e);
+      }
+    });
+  });
+
+  it('should return two similar hashes (diff < 0.1)', (done) => {
+    //runHandler(event, customContext, callback)
+    const body = querystring.stringify({
+      url1: 'https://mtyiu.github.io/serverless-image-hash/images/forest-high.jpg',
+      url2: 'https://mtyiu.github.io/serverless-image-hash/images/forest-copyright.jpg'
+    });
+    wrapped.runHandler({ body: body }, {}, (err, response) => {
+      try {
+        assert.notEqual(response.hashes[0], response.hashes[1]);
+        assert.isBelow(response.diff, 0.1);
+        done();
+      } catch(e) {
+        done(e);
+      }
     });
   });
 });
