@@ -1,5 +1,7 @@
 {
   "name": "serverless-image-hash",
   "custom": {},
-  "plugins": []
+  "plugins": [
+    "serverless-test-plugin"
+  ]
 }
