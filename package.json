@@ -10,6 +10,7 @@
     "url": "git://github.com/"
   },
   "dependencies": {
-    "jimp": "^0.2.27"
+    "jimp": "^0.2.27",
+    "serverless-mocha-plugin": "^0.5.15"
   }
 }
