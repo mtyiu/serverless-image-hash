@@ -5,11 +5,19 @@
   "author": "me",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "test": "export NODE_PATH=`npm root -g` && mocha tests/all"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/"
   },
   "dependencies": {
-    "jimp": "^0.2.27"
+    "jimp": "^0.2.27",
+    "serverless-unittest-boilerplate": "^0.1.2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2"
   }
 }
